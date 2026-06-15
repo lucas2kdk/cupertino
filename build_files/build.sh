@@ -77,7 +77,7 @@ patch_silent() {
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
 patch_silent
-./install.sh -d /usr/share/themes -t default 2>&1 | tee /tmp/whitesur-gtk.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== last 100 lines of trace ==="; tail -100 /tmp/whitesur-gtk.log; exit "$rc"; }
+./install.sh -d /usr/share/themes -t default 2>&1 | tee /tmp/whitesur-gtk.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== WhiteSur error_log.txt ==="; cat /tmp/WhiteSur.lock/error_log.txt 2>&1 || true; exit "$rc"; }
 cd "$TMPDIR"
 
 # Icon theme
