@@ -45,6 +45,10 @@ dnf5 install -y \
 export USER="${USER:-root}"
 export HOME="${HOME:-/root}"
 export TERM="${TERM:-xterm}"
+# WhiteSur uses these to fill SCSS placeholders; without gnome-shell installed
+# the script generates invalid SCSS ('$GNOME_SHELL: ;')
+export SHELL_VERSION="46"
+export GNOME_VERSION="46-0"
 
 TMPDIR="$(mktemp -d)"
 cd "$TMPDIR"
