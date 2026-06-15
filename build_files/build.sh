@@ -61,7 +61,7 @@ cd "$TMPDIR"
 # GTK theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
-./install.sh -d /usr/share/themes -c Light -c Dark -t default -l
+./install.sh -d /usr/share/themes -c light -c dark -t default
 cd "$TMPDIR"
 
 # Icon theme
