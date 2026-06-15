@@ -66,7 +66,7 @@ cd "$TMPDIR"
 # GTK theme — install.sh's animation/spinner needs a pty; wrap with script(1)
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
-script -qfec "./install.sh -d /usr/share/themes -c light -c dark -t default --silent-mode 2>&1 | tee /tmp/whitesur-gtk.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-gtk.log.raw || {
+script -qfec "./install.sh -d /usr/share/themes -c light -c dark -t default 2>&1 | tee /tmp/whitesur-gtk.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-gtk.log.raw || {
     echo "=== WhiteSur GTK install failed; log: ==="
     cat /tmp/whitesur-gtk.log || true
     exit 1
