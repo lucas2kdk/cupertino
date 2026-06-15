@@ -58,23 +58,24 @@ cp -r Kvantum/* /usr/share/Kvantum/
 cp -r wallpaper/* /usr/share/wallpapers/ || true
 cd "$TMPDIR"
 
-# GTK theme
+# GTK theme — wrap install.sh in `script` to provide a pty (setterm needs tty, exits 2 otherwise)
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
-./install.sh -d /usr/share/themes -c light -c dark -t default
+script -qfec "./install.sh -d /usr/share/themes -c light -c dark -t default" /dev/null
 cd "$TMPDIR"
 
 # Icon theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
 cd WhiteSur-icon-theme
-./install.sh -d /usr/share/icons -a
+script -qfec "./install.sh -d /usr/share/icons -a" /dev/null
 cd "$TMPDIR"
 
 # Cursor theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-cursors.git
 cd WhiteSur-cursors
 make build || true
-cp -r dist /usr/share/icons/WhiteSur-cursors
+mkdir -p /usr/share/icons/WhiteSur-cursors
+cp -r dist/* /usr/share/icons/WhiteSur-cursors/ 2>/dev/null || cp -r dist /usr/share/icons/WhiteSur-cursors
 cd /
 rm -rf "$TMPDIR"
 
