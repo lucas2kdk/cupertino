@@ -140,5 +140,8 @@ cat > /etc/skel/.icons/default/index.theme <<'EOF'
 Inherits=WhiteSur-cursors
 EOF
 
+### --- Install cupertino ujust recipes ---
+install -Dm0644 /ctx/90-cupertino.just /usr/share/ublue-os/just/90-cupertino.just
+
 ### Enable services
 systemctl enable podman.socket
