@@ -77,14 +77,30 @@ patch_silent() {
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
 patch_silent
-./install.sh -d /usr/share/themes -t default 2>&1 | tee /tmp/whitesur-gtk.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== WhiteSur error_log.txt ==="; cat /tmp/WhiteSur.lock/error_log.txt 2>&1 || true; exit "$rc"; }
+set +e
+./install.sh -d /usr/share/themes -t default 2>&1 | tee /tmp/whitesur-gtk.log
+rc=${PIPESTATUS[0]}
+set -e
+if [ "$rc" != 0 ]; then
+    echo "=== WhiteSur GTK error_log.txt ==="
+    cat /tmp/WhiteSur.lock/error_log.txt 2>&1 || true
+    exit "$rc"
+fi
 cd "$TMPDIR"
 
 # Icon theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
 cd WhiteSur-icon-theme
 patch_silent
-./install.sh -d /usr/share/icons -a 2>&1 | tee /tmp/whitesur-icons.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== last 100 lines of trace ==="; tail -100 /tmp/whitesur-icons.log; exit "$rc"; }
+set +e
+./install.sh -d /usr/share/icons -a 2>&1 | tee /tmp/whitesur-icons.log
+rc=${PIPESTATUS[0]}
+set -e
+if [ "$rc" != 0 ]; then
+    echo "=== WhiteSur icons error_log.txt ==="
+    cat /tmp/WhiteSur.lock/error_log.txt 2>&1 || true
+    exit "$rc"
+fi
 cd "$TMPDIR"
 
 # Cursor theme
