@@ -15,7 +15,9 @@ dnf5 install -y \
     papirus-icon-theme \
     git \
     inkscape \
-    util-linux-script
+    util-linux-script \
+    glib2-devel \
+    libxml2
 
 ### --- dx-style developer tooling ---
 dnf5 install -y \
