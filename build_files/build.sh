@@ -65,24 +65,24 @@ cp -r Kvantum/* /usr/share/Kvantum/
 cp -r wallpaper/* /usr/share/wallpapers/ || true
 cd "$TMPDIR"
 
-# GTK theme — install.sh's animation/spinner needs a pty; wrap with script(1)
+# Patch silent_mode default to true — avoids start_animation/setterm needing a tty
+# and avoids --silent-mode flag's full_sudo /root writable check
+patch_silent() {
+    sed -i 's/^silent_mode="false"/silent_mode="true"/' libs/lib-core.sh
+}
+
+# GTK theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
-script -qfec "bash -x ./install.sh -d /usr/share/themes -c light -c dark -t default 2>&1 | tee /tmp/whitesur-gtk.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-gtk.log.raw || {
-    echo "=== WhiteSur GTK install failed; log: ==="
-    cat /tmp/whitesur-gtk.log || true
-    exit 1
-}
+patch_silent
+./install.sh -d /usr/share/themes -c light -c dark -t default
 cd "$TMPDIR"
 
 # Icon theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
 cd WhiteSur-icon-theme
-script -qfec "./install.sh -d /usr/share/icons -a 2>&1 | tee /tmp/whitesur-icons.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-icons.log.raw || {
-    echo "=== WhiteSur icon install failed; log: ==="
-    cat /tmp/whitesur-icons.log || true
-    exit 1
-}
+patch_silent
+./install.sh -d /usr/share/icons -a
 cd "$TMPDIR"
 
 # Cursor theme
