@@ -75,7 +75,7 @@ patch_silent() {
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
 patch_silent
-./install.sh -d /usr/share/themes -c light -c dark -t default
+./install.sh -d /usr/share/themes -t default
 cd "$TMPDIR"
 
 # Icon theme
