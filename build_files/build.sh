@@ -12,7 +12,6 @@ dnf5 install -y \
     qt6ct \
     gtk-murrine-engine \
     sassc \
-    adwaita-gtk2-theme \
     papirus-icon-theme \
     git \
     inkscape
