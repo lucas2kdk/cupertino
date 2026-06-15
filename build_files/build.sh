@@ -59,16 +59,24 @@ cp -r Kvantum/* /usr/share/Kvantum/
 cp -r wallpaper/* /usr/share/wallpapers/ || true
 cd "$TMPDIR"
 
-# GTK theme — wrap install.sh in `script` to provide a pty (setterm needs tty, exits 2 otherwise)
+# GTK theme — install.sh's animation/spinner needs a pty; wrap with script(1)
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
-script -qfec "./install.sh -d /usr/share/themes -c light -c dark -t default" /dev/null
+script -qfec "./install.sh -d /usr/share/themes -c light -c dark -t default --silent-mode 2>&1 | tee /tmp/whitesur-gtk.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-gtk.log.raw || {
+    echo "=== WhiteSur GTK install failed; log: ==="
+    cat /tmp/whitesur-gtk.log || true
+    exit 1
+}
 cd "$TMPDIR"
 
 # Icon theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
 cd WhiteSur-icon-theme
-script -qfec "./install.sh -d /usr/share/icons -a" /dev/null
+script -qfec "./install.sh -d /usr/share/icons -a 2>&1 | tee /tmp/whitesur-icons.log; exit \${PIPESTATUS[0]}" /tmp/whitesur-icons.log.raw || {
+    echo "=== WhiteSur icon install failed; log: ==="
+    cat /tmp/whitesur-icons.log || true
+    exit 1
+}
 cd "$TMPDIR"
 
 # Cursor theme
