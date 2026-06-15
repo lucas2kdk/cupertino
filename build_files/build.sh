@@ -40,9 +40,11 @@ dnf5 install -y \
     kdeplasma-addons || true
 
 ### --- Install WhiteSur theme suite system-wide ---
-# WhiteSur install scripts assume $USER is set; container builds have no login session
+# WhiteSur install scripts assume $USER, $HOME, and $TERM are set
+# Container builds have no login session and no terminal
 export USER="${USER:-root}"
 export HOME="${HOME:-/root}"
+export TERM="${TERM:-xterm}"
 
 TMPDIR="$(mktemp -d)"
 cd "$TMPDIR"
