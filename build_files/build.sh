@@ -14,7 +14,8 @@ dnf5 install -y \
     sassc \
     papirus-icon-theme \
     git \
-    inkscape
+    inkscape \
+    util-linux-script
 
 ### --- dx-style developer tooling ---
 dnf5 install -y \
