@@ -69,20 +69,22 @@ cd "$TMPDIR"
 # and avoids --silent-mode flag's full_sudo /root writable check
 patch_silent() {
     sed -i 's/^silent_mode="false"/silent_mode="true"/' libs/lib-core.sh
+    # Redirect xtrace to stderr (visible in build log)
+    sed -i '0,/^set -Eeo pipefail/s//set -Eeoxv pipefail/' libs/lib-core.sh || true
 }
 
 # GTK theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 cd WhiteSur-gtk-theme
 patch_silent
-./install.sh -d /usr/share/themes -t default
+./install.sh -d /usr/share/themes -t default 2>&1 | tee /tmp/whitesur-gtk.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== last 100 lines of trace ==="; tail -100 /tmp/whitesur-gtk.log; exit "$rc"; }
 cd "$TMPDIR"
 
 # Icon theme
 git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
 cd WhiteSur-icon-theme
 patch_silent
-./install.sh -d /usr/share/icons -a
+./install.sh -d /usr/share/icons -a 2>&1 | tee /tmp/whitesur-icons.log; rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && { echo "=== last 100 lines of trace ==="; tail -100 /tmp/whitesur-icons.log; exit "$rc"; }
 cd "$TMPDIR"
 
 # Cursor theme
