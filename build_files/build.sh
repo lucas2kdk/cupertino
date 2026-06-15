@@ -2,23 +2,41 @@
 
 set -ouex pipefail
 
-### Install packages
+### cupertino: macOS-inspired Bazzite KDE spin
+### Base: bazzite-nvidia-open:stable (KDE + signed nvidia-open)
+### This script layers: dx-style devtools + Qt/GTK theming stack for macOS look
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+### --- Theming stack (Kvantum + GTK + icons + cursors) ---
+dnf5 install -y \
+    kvantum \
+    qt5ct \
+    qt6ct \
+    gtk-murrine-engine \
+    sassc \
+    gnome-themes-extra \
+    papirus-icon-theme
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+### --- dx-style developer tooling ---
+dnf5 install -y \
+    tmux \
+    git-credential-libsecret \
+    gh \
+    just \
+    jq \
+    fzf \
+    ripgrep \
+    fd-find \
+    bat \
+    htop \
+    podman-compose \
+    distrobox
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+### --- KDE extras for macOS feel ---
+# Latte Dock is no longer in Fedora 42+, Plasma 6 uses native panel.
+# Plasma6 already ships KWin Magic Lamp (Genie minimize) effect.
+dnf5 install -y \
+    plasma-systemmonitor \
+    kdeplasma-addons || true
 
-#### Example for enabling a System Unit File
-
+### Enable services
 systemctl enable podman.socket
