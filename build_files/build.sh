@@ -74,12 +74,10 @@ cd "$TMPDIR"
 # Patch silent_mode default to true — avoids start_animation/setterm needing a tty
 # and avoids --silent-mode flag's full_sudo /root writable check
 patch_silent() {
-    sed -i 's/^silent_mode="false"/silent_mode="true"/' libs/lib-core.sh
-    # Disable stderr redirect to error_log.txt so build log shows real errors
-    sed -i 's|exec 2> "${WHITESUR_TMP_DIR}/error_log.txt"|true|' install.sh
-    # Disable EXIT/ERR signal traps so we keep error_log.txt + stderr visible
-    sed -i "s|trap 'signal_exit' EXIT||" libs/lib-core.sh
-    sed -i "s|trap 'signal_error' ERR||" libs/lib-core.sh
+    [ -f libs/lib-core.sh ] && sed -i 's/^silent_mode="false"/silent_mode="true"/' libs/lib-core.sh || true
+    [ -f install.sh ] && sed -i 's|exec 2> "${WHITESUR_TMP_DIR}/error_log.txt"|true|' install.sh || true
+    [ -f libs/lib-core.sh ] && sed -i "s|trap 'signal_exit' EXIT||" libs/lib-core.sh || true
+    [ -f libs/lib-core.sh ] && sed -i "s|trap 'signal_error' ERR||" libs/lib-core.sh || true
 }
 
 # GTK theme
