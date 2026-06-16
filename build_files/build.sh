@@ -37,7 +37,8 @@ dnf5 install -y \
 ### --- KDE extras for macOS feel ---
 dnf5 install -y \
     plasma-systemmonitor \
-    kdeplasma-addons || true
+    kdeplasma-addons \
+    appmenu-gtk3-module || true
 
 ### --- Install WhiteSur theme suite system-wide ---
 # WhiteSur install scripts assume $USER, $HOME, and $TERM are set
@@ -65,7 +66,14 @@ mkdir -p /usr/share/plasma/look-and-feel \
          /usr/share/wallpapers
 cp -r plasma/look-and-feel/* /usr/share/plasma/look-and-feel/
 cp -r plasma/desktoptheme/* /usr/share/plasma/desktoptheme/
-cp -r aurorae/* /usr/share/aurorae/themes/
+if [ -d aurorae/themes ]; then
+    cp -r aurorae/themes/* /usr/share/aurorae/themes/
+else
+    # Repo layout: aurorae/ IS the theme — place it under its own dir
+    mkdir -p /usr/share/aurorae/themes/WhiteSur-dark
+    cp -r aurorae/* /usr/share/aurorae/themes/WhiteSur-dark/
+fi
+ls /usr/share/aurorae/themes/
 cp -r color-schemes/*.colors /usr/share/color-schemes/
 cp -r Kvantum/* /usr/share/Kvantum/
 cp -r wallpaper/* /usr/share/wallpapers/ || true
@@ -181,7 +189,7 @@ Inherits=WhiteSur-cursors
 EOF
 
 ### --- Install cupertino ujust recipes ---
-install -Dm0644 /ctx/90-cupertino.just /usr/share/ublue-os/just/90-cupertino.just
+install -Dm0644 /ctx/90-cupertino.just /usr/share/ublue-os/just/60-custom.just
 
 ### Enable services
 systemctl enable podman.socket
