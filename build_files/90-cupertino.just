@@ -43,6 +43,12 @@ cupertino-apply-theme:
         gsettings set org.gnome.desktop.interface cursor-theme 'WhiteSur-cursors' || true
     fi
 
+    # Set default wallpaper (first wallpaper shipped by WhiteSur-kde)
+    WP="$(ls /usr/share/wallpapers/*.jpg /usr/share/wallpapers/*.png 2>/dev/null | head -1 || true)"
+    if [ -n "$WP" ] && command -v plasma-apply-wallpaperimage >/dev/null; then
+        plasma-apply-wallpaperimage "$WP" || true
+    fi
+
     # Rearrange panels: top global-menu bar + bottom icon dock
     {{just_executable()}} --justfile {{justfile()}} cupertino-apply-panels
 
@@ -59,7 +65,10 @@ cupertino-apply-panels:
     var top = new Panel;
     top.location = "top";
     top.height = 28;
-    top.addWidget("org.kde.plasma.kickoff");
+    var apple = top.addWidget("org.kde.plasma.kickoff");
+    apple.currentConfigGroup = ["General"];
+    apple.writeConfig("icon", "/usr/share/icons/hicolor/scalable/apps/cupertino-apple.svg");
+    apple.writeConfig("menuLabel", "");
     top.addWidget("org.kde.plasma.appmenu");
     top.addWidget("org.kde.plasma.panelspacer");
     top.addWidget("org.kde.plasma.systemtray");
@@ -77,7 +86,7 @@ cupertino-apply-panels:
     dock.floating = true;
     var tasks = dock.addWidget("org.kde.plasma.icontasks");
     tasks.currentConfigGroup = ["General"];
-    tasks.writeConfig("launchers", "applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:firefox.desktop,applications:org.kde.konsole.desktop");
+    tasks.writeConfig("launchers", "applications:org.kde.dolphin.desktop,applications:firefox.desktop,applications:org.mozilla.firefox.desktop,applications:org.kde.konsole.desktop,applications:org.kde.kate.desktop,applications:org.kde.kcalc.desktop,applications:org.kde.gwenview.desktop,applications:org.kde.spectacle.desktop,applications:org.kde.discover.desktop,applications:steam.desktop,applications:com.discordapp.Discord.desktop,applications:com.spotify.Client.desktop,applications:systemsettings.desktop");
     tasks.writeConfig("showOnlyCurrentDesktop", false);
     tasks.writeConfig("showOnlyCurrentScreen", false);
     tasks.writeConfig("showOnlyCurrentActivity", false);

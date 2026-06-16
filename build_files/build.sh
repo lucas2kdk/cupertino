@@ -191,5 +191,15 @@ EOF
 ### --- Install cupertino ujust recipes ---
 install -Dm0644 /ctx/90-cupertino.just /usr/share/ublue-os/just/60-custom.just
 
+### --- Apple logo for kickoff menu ---
+install -Dm0644 /ctx/apple-logo.svg /usr/share/icons/hicolor/scalable/apps/cupertino-apple.svg
+gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
+
+### --- Pick a default wallpaper from WhiteSur-kde wallpapers ---
+DEFAULT_WP="$(ls /usr/share/wallpapers/*.jpg /usr/share/wallpapers/*.png 2>/dev/null | head -1 || true)"
+if [ -n "$DEFAULT_WP" ]; then
+    ln -sf "$DEFAULT_WP" /usr/share/wallpapers/cupertino-default
+fi
+
 ### Enable services
 systemctl enable podman.socket
