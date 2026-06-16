@@ -69,9 +69,9 @@ cp -r plasma/desktoptheme/* /usr/share/plasma/desktoptheme/
 if [ -d aurorae/themes ]; then
     cp -r aurorae/themes/* /usr/share/aurorae/themes/
 else
-    # Repo layout: aurorae/ IS the theme — place it under its own dir
-    mkdir -p /usr/share/aurorae/themes/WhiteSur-dark
-    cp -r aurorae/* /usr/share/aurorae/themes/WhiteSur-dark/
+    # Repo layout: aurorae/ IS the theme; metadata Id=WhiteSur, so dir must match
+    mkdir -p /usr/share/aurorae/themes/WhiteSur
+    cp -r aurorae/* /usr/share/aurorae/themes/WhiteSur/
 fi
 ls /usr/share/aurorae/themes/
 cp -r color-schemes/*.colors /usr/share/color-schemes/

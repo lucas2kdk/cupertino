@@ -26,7 +26,7 @@ cupertino-apply-theme:
 
     # Window decoration → Aurorae WhiteSur-dark
     kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library org.kde.kwin.aurorae
-    kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme __aurorae__svg__WhiteSur-dark
+    kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme __aurorae__svg__WhiteSur
 
     # Kvantum theme selection
     mkdir -p ~/.config/Kvantum
@@ -65,9 +65,11 @@ cupertino-apply-panels:
     var top = new Panel;
     top.location = "top";
     top.height = 28;
+    top.floating = false;
+    top.lengthMode = "fill";
     var apple = top.addWidget("org.kde.plasma.kickoff");
     apple.currentConfigGroup = ["General"];
-    apple.writeConfig("icon", "/usr/share/icons/hicolor/scalable/apps/cupertino-apple.svg");
+    apple.writeConfig("icon", "cupertino-apple");
     apple.writeConfig("menuLabel", "");
     top.addWidget("org.kde.plasma.appmenu");
     top.addWidget("org.kde.plasma.panelspacer");
